@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframe Preview — Rental Mobil Anak</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --primary: #f97316;
+    --primary-500: #f97316;
+    --primary-600: #ea580c;
+    --secondary: #3b82f6;
+    --success: #22c55e;
+    --warning: #eab308;
+    --error: #ef4444;
+    --info: #3b82f6;
+    --neutral-50: #fafafa;
+    --neutral-100: #f5f5f5;
+    --neutral-200: #e5e5e5;
+    --neutral-300: #d4d4d4;
+    --neutral-400: #a3a3a3;
+    --neutral-500: #737373;
+    --neutral-600: #525252;
+    --neutral-700: #404040;
+    --neutral-800: #262626;
+    --neutral-900: #171717;
+    --radius: 0.5rem;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #f5f5f5; color: #171717; }
+  .app-shell { display: flex; height: 100vh; overflow: hidden; }
+  .sidebar {
+    width: 240px; min-width: 240px; background: #fff; border-right: 1px solid #e5e5e5;
+    display: flex; flex-direction: column; overflow-y: auto;
+  }
+  .sidebar-logo { padding: 16px 20px; border-bottom: 1px solid #e5e5e5; font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 8px; color: var(--primary); }
+  .sidebar-nav { flex: 1; padding: 8px; }
+  .sidebar-nav a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 6px; font-size: 13px; color: #525252; text-decoration: none; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; }
+  .sidebar-nav a:hover { background: #f5f5f5; color: #171717; }
+  .sidebar-nav a.active { background: #fff7ed; color: var(--primary); font-weight: 600; }
+  .sidebar-nav a .icon { font-size: 18px; width: 22px; text-align: center; }
+  .sidebar-nav a .badge { margin-left: auto; background: var(--primary); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: 600; }
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .header { height: 56px; min-height: 56px; background: #fff; border-bottom: 1px solid #e5e5e5; display: flex; align-items: center; padding: 0 24px; gap: 16px; }
+  .header h1 { font-size: 16px; font-weight: 600; flex: 1; }
+  .header .user { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #525252; }
+  .header .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; }
+  .content { flex: 1; overflow-y: auto; padding: 24px; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* Cards */
+  .card { background: #fff; border: 1px solid #e5e5e5; border-radius: var(--radius); padding: 20px; }
+  .card-sm { padding: 14px 16px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .stat-card { background: #fff; border: 1px solid #e5e5e5; border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; gap: 14px; }
+  .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .stat-icon.orange { background: #fff7ed; color: var(--primary); }
+  .stat-icon.blue { background: #eff6ff; color: var(--secondary); }
+  .stat-icon.green { background: #f0fdf4; color: var(--success); }
+  .stat-icon.yellow { background: #fefce8; color: var(--warning); }
+  .stat-value { font-size: 22px; font-weight: 700; }
+  .stat-label { font-size: 12px; color: var(--neutral-500); }
+  .stat-trend { font-size: 11px; color: var(--success); }
+  .stat-trend.down { color: var(--error); }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 10px 14px; font-weight: 600; color: var(--neutral-500); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #e5e5e5; }
+  td { padding: 10px 14px; border-bottom: 1px solid #f5f5f5; }
+  tr:hover td { background: #fafafa; }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+  .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .btn-primary:hover { background: var(--primary-600); }
+  .btn-outline { background: #fff; border-color: #d4d4d4; color: #404040; }
+  .btn-outline:hover { background: #fafafa; border-color: #a3a3a3; }
+  .btn-ghost { background: transparent; border-color: transparent; color: #525252; }
+  .btn-danger { background: #fff; border-color: var(--error); color: var(--error); }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  .btn-lg { padding: 10px 24px; font-size: 14px; }
+  .btn-full { width: 100%; justify-content: center; }
+
+  /* Form */
+  .input { width: 100%; padding: 9px 12px; border: 1px solid #d4d4d4; border-radius: 6px; font-size: 13px; outline: none; transition: border-color 0.15s; }
+  .input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(249,115,22,0.1); }
+  .select { padding: 9px 12px; border: 1px solid #d4d4d4; border-radius: 6px; font-size: 13px; background: #fff; min-width: 140px; }
+  label { font-size: 13px; font-weight: 500; margin-bottom: 4px; display: block; color: #404040; }
+
+  /* Badge / Status */
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-success { background: #f0fdf4; color: #16a34a; }
+  .badge-warning { background: #fefce8; color: #ca8a04; }
+  .badge-error { background: #fef2f2; color: #dc2626; }
+  .badge-info { background: #eff6ff; color: #2563eb; }
+  .badge-neutral { background: #f5f5f5; color: #525252; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot-green { background: #22c55e; }
+  .dot-blue { background: #3b82f6; }
+  .dot-yellow { background: #eab308; }
+  .dot-red { background: #ef4444; }
+
+  /* Charts (CSS simulated) */
+  .chart-bar { display: flex; align-items: end; gap: 4px; height: 120px; }
+  .chart-bar .bar { flex: 1; background: var(--primary); border-radius: 3px 3px 0 0; min-width: 12px; opacity: 0.8; transition: opacity 0.2s; }
+  .chart-bar .bar:hover { opacity: 1; }
+  .chart-labels { display: flex; gap: 4px; margin-top: 6px; font-size: 10px; color: var(--neutral-500); }
+  .chart-labels span { flex: 1; text-align: center; }
+
+  .bar-chart-label { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 12px; }
+  .bar-chart-label .bar { height: 16px; background: var(--primary); border-radius: 3px; opacity: 0.8; }
+  .bar-chart-label .name { width: 80px; text-align: right; font-size: 11px; color: var(--neutral-500); }
+  .bar-chart-label .val { font-weight: 600; font-size: 11px; min-width: 40px; }
+
+  .pie-chart { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--success) 0% 65%, var(--secondary) 65% 90%, var(--warning) 90% 97%, var(--error) 97% 100%); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+
+  .flex-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .spacer { flex: 1; }
+
+  /* Login page */
+  .login-bg { background: radial-gradient(circle at 50% 0%, #fff7ed 0%, #fafafa 60%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .login-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 36px; width: 100%; max-width: 400px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+  /* Map placeholder */
+  .map-placeholder { background: #e8f4e8; border: 1px dashed #a3d9a3; border-radius: 8px; height: 280px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .map-placeholder::before { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, #d4edd4 25%, transparent 25%, transparent 75%, #d4edd4 75%), linear-gradient(45deg, #d4edd4 25%, transparent 25%, transparent 75%, #d4edd4 75%); background-size: 40px 40px; background-position: 0 0, 20px 20px; opacity: 0.3; }
+  .map-dot { position: absolute; width: 8px; height: 8px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 0 3px rgba(249,115,22,0.2); }
+  .map-label { position: absolute; font-size: 10px; background: #fff; padding: 2px 6px; border-radius: 4px; white-space: nowrap; border: 1px solid #e5e5e5; }
+  .map-geofence { position: absolute; border: 2px dashed var(--success); border-radius: 4px; background: rgba(34,197,94,0.05); }
+
+  .section-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--neutral-500); margin-bottom: 10px; }
+
+  /* Timer */
+  .timer-badge { display: inline-flex; align-items: center; gap: 4px; font-family: 'Courier New', monospace; font-weight: 700; font-size: 14px; }
+  .timer-warning { color: #ca8a04; }
+  .timer-danger { color: #dc2626; }
+
+  /* Mobile */
+  .mobile-frame { width: 390px; height: 780px; border: 3px solid #262626; border-radius: 32px; overflow: hidden; background: #fff; margin: 0 auto; }
+  .mobile-header { height: 48px; background: #fff; border-bottom: 1px solid #e5e5e5; display: flex; align-items: center; padding: 0 16px; font-weight: 600; font-size: 13px; }
+  .mobile-content { height: calc(100% - 96px); overflow-y: auto; padding: 12px; }
+  .mobile-nav { height: 48px; border-top: 1px solid #e5e5e5; display: flex; align-items: center; }
+  .mobile-nav a { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: var(--neutral-500); text-decoration: none; }
+  .mobile-nav a .nav-icon { font-size: 18px; }
+  .mobile-nav a.active { color: var(--primary); }
+  .mobile-nav a.cta .nav-icon { color: var(--primary); font-size: 24px; }
+
+  .qrcode { width: 100px; height: 100px; background: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50% / 10px 10px; border: 6px solid #fff; margin: 0 auto; }
+
+  /* Calendar */
+  .calendar { border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; }
+  .calendar-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #fafafa; font-weight: 600; font-size: 13px; border-bottom: 1px solid #e5e5e5; }
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); padding: 6px; gap: 2px; }
+  .calendar-grid .day-header { font-size: 10px; color: var(--neutral-400); text-align: center; padding: 4px; font-weight: 600; }
+  .calendar-grid .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border-radius: 6px; cursor: pointer; }
+  .calendar-grid .day:hover { background: #f5f5f5; }
+  .calendar-grid .day.today { background: #fff7ed; color: var(--primary); font-weight: 700; }
+  .calendar-grid .day.event::after { content: ''; width: 5px; height: 5px; background: var(--primary); border-radius: 50%; position: absolute; bottom: 4px; }
+  .calendar-grid .day { position: relative; }
+
+  /* Skeleton */
+  .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* Alert */
+  .alert { padding: 10px 14px; border-radius: 6px; font-size: 12px; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .alert-warning { background: #fefce8; color: #a16207; border: 1px solid #fef08a; }
+  .alert-info { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .alert-success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .alert-error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+  .progress-bar { height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
+  .progress-bar .fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.3s; }
+
+  .steps-list { list-style: none; }
+  .steps-list li { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 13px; border-bottom: 1px solid #f5f5f5; }
+  .steps-list li .step-icon { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #d4d4d4; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+  .steps-list li.done .step-icon { background: var(--success); border-color: var(--success); color: #fff; }
+  .steps-list li.active .step-icon { border-color: var(--primary); color: var(--primary); font-weight: 700; }
+  .steps-list li.done { color: var(--success); }
+  .steps-list li.active { font-weight: 600; }
+
+  .filter-bar { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+</style>
+</head>
+<body>
+
+<div class="app-shell" id="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🚗 Rental Mobil Anak</div>
+    <nav class="sidebar-nav">
+      <a data-view="login" class="active"><span class="icon">🔑</span>Login</a>
+      <a data-view="dashboard-admin"><span class="icon">📊</span>Dashboard Admin</a>
+      <a data-view="dashboard-cabang"><span class="icon">🏪</span>Dashboard Cabang</a>
+      <a data-view="unit"><span class="icon">🚗</span>Manajemen Unit</a>
+      <a data-view="sewa"><span class="icon">📋</span>Halaman Sewa</a>
+      <a data-view="tracking"><span class="icon">🗺</span>Tracking</a>
+      <a data-view="popup"><span class="icon">🎪</span>Pop-up Store</a>
+      <a data-view="laporan"><span class="icon">📈</span>Laporan & Analytics</a>
+      <a data-view="mobile"><span class="icon">📱</span>Mobile View</a>
+      <a data-view="states"><span class="icon">🔄</span>States Demo</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <h1 id="viewTitle">Login — Rental Mobil Anak</h1>
+      <div class="user"><div class="avatar">AS</div><span>Admin Super</span></div>
+    </header>
+    <div class="content">
+
+      <!-- LOGIN -->
+      <div class="view active" id="view-login">
+        <div class="login-bg" style="margin:-24px; display:flex;">
+          <div class="login-card">
+            <div style="text-align:center; margin-bottom:28px;">
+              <div style="font-size:40px; margin-bottom:8px;">🚗</div>
+              <div style="font-size:20px; font-weight:700; color:var(--primary);">Rental Mobil Anak</div>
+              <div style="font-size:12px; color:var(--neutral-500);">Platform Manajemen Terpadu</div>
+            </div>
+            <div style="font-size:15px; font-weight:600; margin-bottom:18px; text-align:center;">Masuk ke Dashboard</div>
+            <div style="margin-bottom:14px;">
+              <label>Email / Username</label>
+              <input class="input" type="text" placeholder="ketik email..." value="admin@rentalmobilanak.id">
+            </div>
+            <div style="margin-bottom:10px;">
+              <label>Kata Sandi</label>
+              <input class="input" type="password" placeholder="••••••••••" value="password123">
+            </div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:18px; font-size:12px; color:var(--neutral-600);">
+              <input type="checkbox" checked> Ingat saya
+            </div>
+            <button class="btn btn-primary btn-full btn-lg">MASUK</button>
+            <div style="text-align:center; margin-top:14px; font-size:12px;">
+              <a href="#" style="color:var(--primary);">Lupa kata sandi?</a>
+            </div>
+            <div style="text-align:center; margin-top:28px; font-size:11px; color:var(--neutral-400);">© 2026 Rental Mobil Anak</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASHBOARD ADMIN PUSAT -->
+      <div class="view" id="view-dashboard-admin">
+        <div class="flex-row" style="margin-bottom:20px;">
+          <div style="font-size:16px; font-weight:600;">Dashboard</div>
+          <div class="spacer"></div>
+          <span style="font-size:12px; color:#737373;">Cabang:</span>
+          <select class="select"><option>Semua</option><option>Mall Grand Indonesia</option><option>Mall Tunjungan Plaza</option></select>
+          <span class="badge badge-neutral">📅 Hari Ini</span>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-icon orange">🚗</div>
+            <div><div class="stat-label">Unit Aktif</div><div class="stat-value">1,247</div><div class="stat-trend">↑ 12% vs kemarin</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">💰</div>
+            <div><div class="stat-label">Pendapatan Hari Ini</div><div class="stat-value">Rp 45.2M</div><div class="stat-trend">↑ 8% vs kemarin</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue">🏪</div>
+            <div><div class="stat-label">Cabang Online</div><div class="stat-value">218 <span style="font-size:13px; font-weight:400; color:#737373;">/ 250</span></div></div>
+          </div>
+          <div class="stat-card" style="flex-direction:column; align-items:start;">
+            <div style="font-weight:600; font-size:13px; margin-bottom:8px;">⚡ Quick Actions</div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm">Mulai Sewa</button>
+              <button class="btn btn-outline btn-sm">Tambah Unit</button>
+              <button class="btn btn-outline btn-sm">Laporan</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="section-title">🗺 Peta Indonesia — 250 Cabang</div>
+            <div class="map-placeholder" style="height:240px;">
+              <div class="map-dot" style="left:30%;top:45%;"></div><div class="map-label" style="left:32%;top:43%;">Jakarta (1,200)</div>
+              <div class="map-dot" style="left:42%;top:58%;"></div><div class="map-label" style="left:44%;top:56%;">Surabaya (850)</div>
+              <div class="map-dot" style="left:25%;top:35%;"></div><div class="map-label" style="left:27%;top:33%;">Medan (350)</div>
+              <div class="map-dot" style="left:38%;top:68%;"></div><div class="map-label" style="left:40%;top:66%;">Makassar (280)</div>
+              <div class="map-dot" style="left:35%;top:48%;"></div><div class="map-label" style="left:37%;top:46%;">Bandung (420)</div>
+            </div>
+            <div class="flex-row" style="margin-top:8px; font-size:11px; justify-content:end;">
+              <button class="btn btn-ghost btn-sm">+ Zoom</button>
+              <button class="btn btn-ghost btn-sm">- Zoom</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">📈 Pendapatan 7 Hari Terakhir</div>
+            <div class="chart-bar" style="height:150px;">
+              <div class="bar" style="height:45%"></div><div class="bar" style="height:55%"></div>
+              <div class="bar" style="height:70%"></div><div class="bar" style="height:90%"></div>
+              <div class="bar" style="height:80%"></div><div class="bar" style="height:60%"></div>
+              <div class="bar" style="height:50%"></div>
+            </div>
+            <div class="chart-labels"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div>
+            <div style="margin-top:8px; font-size:12px; color:var(--neutral-500);">Total: <b>Rp 315.4M</b> — Rata-rata/hari: <b>Rp 45.1M</b></div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px;">
+          <div class="card">
+            <div class="section-title">📊 Utilisasi Unit Per Jam</div>
+            <div class="chart-bar" style="height:100px;">
+              <div class="bar" style="height:30%"></div><div class="bar" style="height:50%"></div><div class="bar" style="height:75%"></div>
+              <div class="bar" style="height:95%"></div><div class="bar" style="height:85%"></div><div class="bar" style="height:60%"></div>
+              <div class="bar" style="height:40%"></div><div class="bar" style="height:20%"></div>
+            </div>
+            <div class="chart-labels"><span>08</span><span>10</span><span>12</span><span>14</span><span>16</span><span>18</span><span>20</span><span>22</span></div>
+            <div style="margin-top:4px; font-size:11px; color:var(--neutral-500);">Rata-rata: 72% &nbsp; Peak: 89% (14:00)</div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">🕐 Transaksi Terbaru</div>
+            <table>
+              <thead><tr><th>Jam</th><th>Cabang</th><th>Unit</th><th>Biaya</th></tr></thead>
+              <tbody>
+                <tr><td>14:32</td><td>Mall Grand Ind.</td><td>TK-1234</td><td style="font-weight:600;">Rp 50K</td></tr>
+                <tr><td>14:28</td><td>Mall Tunjungan</td><td>TK-5678</td><td style="font-weight:600;">Rp 30K</td></tr>
+                <tr><td>14:15</td><td>Mall Kelapa Gading</td><td>TK-9012</td><td style="font-weight:600;">Rp 75K</td></tr>
+                <tr><td>14:10</td><td>Mall Grand Ind.</td><td>TK-3456</td><td style="font-weight:600;">Rp 20K</td></tr>
+                <tr><td>14:02</td><td>Mall Tunjungan</td><td>TK-7890</td><td style="font-weight:600;">Rp 45K</td></tr>
+              </tbody>
+            </table>
+            <div style="text-align:right; margin-top:8px;"><a href="#" style="font-size:12px; color:var(--primary); font-weight:600;">Lihat Semua →</a></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASHBOARD CABANG -->
+      <div class="view" id="view-dashboard-cabang">
+        <div class="flex-row" style="margin-bottom:20px;">
+          <div>
+            <div style="font-size:16px; font-weight:600;">Dashboard Cabang — Mall Grand Indonesia</div>
+            <div style="font-size:11px; color:var(--neutral-500);">Jl. MH Thamrin, Jakarta Pusat</div>
+          </div>
+          <div class="spacer"></div>
+          <span class="badge badge-neutral">📅 Hari Ini</span>
+          <span class="badge badge-success">● Online</span>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-icon orange">🚗</div><div><div class="stat-label">Unit Aktif</div><div class="stat-value">85 <span style="font-size:13px;font-weight:400;color:#737373;">/ 120</span></div></div></div>
+          <div class="stat-card"><div class="stat-icon green">💰</div><div><div class="stat-label">Pendapatan</div><div class="stat-value">Rp 3.2M</div></div></div>
+          <div class="stat-card"><div class="stat-icon blue">⏱</div><div><div class="stat-label">Sewa Aktif</div><div class="stat-value">14</div></div></div>
+          <div class="stat-card"><div class="stat-icon yellow">📊</div><div><div class="stat-label">Utilisasi</div><div class="stat-value">72%</div><div class="progress-bar" style="width:80px;"><div class="fill" style="width:72%"></div></div></div></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="section-title">Unit Per Status</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:90px;font-size:12px;">🟢 Tersedia</span><span style="font-weight:700;width:30px;">35</span><div style="flex:1;height:20px;background:#22c55e;border-radius:4px;width:180px;"></div></div>
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:90px;font-size:12px;">🔵 Disewa</span><span style="font-weight:700;width:30px;">14</span><div style="flex:1;height:20px;background:#3b82f6;border-radius:4px;width:70px;"></div></div>
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:90px;font-size:12px;">🟡 Perbaikan</span><span style="font-weight:700;width:30px;">2</span><div style="flex:1;height:20px;background:#eab308;border-radius:4px;width:10px;"></div></div>
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:90px;font-size:12px;">🔴 Rusak</span><span style="font-weight:700;width:30px;">0</span><div style="flex:1;height:20px;background:#ef4444;border-radius:4px;width:0px;"></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-title">Pendapatan Per Jam</div>
+            <div class="chart-bar" style="height:100px;">
+              <div class="bar" style="height:20%"></div><div class="bar" style="height:45%"></div><div class="bar" style="height:70%"></div>
+              <div class="bar" style="height:100%"></div><div class="bar" style="height:85%"></div><div class="bar" style="height:55%"></div>
+              <div class="bar" style="height:30%"></div>
+            </div>
+            <div class="chart-labels"><span>08</span><span>10</span><span>12</span><span>14</span><span>16</span><span>18</span><span>20</span></div>
+            <div style="font-size:11px; color:var(--neutral-500); margin-top:4px;">Peak 14:00 = Rp 580K &nbsp;|&nbsp; Total: Rp 3.2M</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <div class="flex-row" style="margin-bottom:12px;">
+            <div class="section-title" style="margin:0;">🚗 Unit Sedang Disewa</div>
+            <div class="spacer"></div>
+            <span class="badge badge-success">⏱ Auto-refresh 10s</span>
+          </div>
+          <table>
+            <thead><tr><th>Unit</th><th>Customer</th><th>Mulai</th><th>Sisa Waktu</th><th>Biaya</th></tr></thead>
+            <tbody>
+              <tr><td><b>TK-01</b></td><td>Budi</td><td>13:45</td><td><span class="timer-badge timer-warning">⏱ 05:23</span></td><td>Rp 15K</td></tr>
+              <tr><td><b>TK-08</b></td><td>Ani</td><td>14:00</td><td><span class="timer-badge">⏱ 20:12</span></td><td>Rp 30K</td></tr>
+              <tr><td><b>TK-15</b></td><td>Siti</td><td>14:10</td><td><span class="timer-badge timer-danger">⏱ -05:05</span></td><td>Rp 45K</td></tr>
+              <tr><td><b>TK-22</b></td><td>Dodi</td><td>14:25</td><td><span class="timer-badge">⏱ 45:51</span></td><td>Rp 60K</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px;">
+          <div class="card">
+            <div class="section-title">⚡ Quick Actions</div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <button class="btn btn-primary">Mulai Sewa</button>
+              <button class="btn btn-outline">Cek Unit Ready</button>
+              <button class="btn btn-outline">Laporan Shift</button>
+              <button class="btn btn-outline">Popup Store Aktif</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-title">🔔 Notifikasi Cabang</div>
+            <div class="alert alert-warning">⚠ TK-08 melebihi durasi sewa</div>
+            <div class="alert alert-warning">⚠ Stok unit tersisa &lt; 10</div>
+            <div class="alert alert-success">✓ Shift diteruskan ke operator malam</div>
+            <div class="alert alert-info">ℹ Maintenance TK-05 selesai</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MANAJEMEN UNIT -->
+      <div class="view" id="view-unit">
+        <div class="flex-row" style="margin-bottom:16px;">
+          <div style="font-size:16px; font-weight:600;">Manajemen Unit</div>
+          <div class="spacer"></div>
+          <button class="btn btn-primary">+ Tambah Unit</button>
+          <button class="btn btn-outline">Export ▾</button>
+        </div>
+
+        <div class="filter-bar">
+          <input class="input" placeholder="🔍 Cari unit / merek / kode..." style="max-width:280px;">
+          <select class="select"><option>Status: Semua</option><option>Tersedia</option><option>Disewa</option><option>Service</option><option>Rusak</option></select>
+          <select class="select"><option>Cabang: Semua</option><option>Mall Grand Indonesia</option><option>Mall Tunjungan Plaza</option></select>
+          <select class="select"><option>Tipe: Semua</option><option>Off-road</option><option>Sport</option><option>Bus</option></select>
+          <button class="btn btn-primary btn-sm">Terapkan</button>
+          <button class="btn btn-ghost btn-sm">Reset</button>
+        </div>
+
+        <div class="card" style="padding:0; overflow:auto;">
+          <table>
+            <thead><tr><th>Kode</th><th>Merek</th><th>Cabang</th><th>Status</th><th>Terakhir Service</th><th>Sewa Total</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><b>TK001</b></td><td>Jeep Anak</td><td>Mall Grand Ind.</td><td><span class="badge badge-success"><span class="dot dot-green"></span> Tersedia</span></td><td>10 Mei 2026</td><td>1,234</td><td><button class="btn btn-ghost btn-sm">⋮</button></td></tr>
+              <tr><td><b>TK002</b></td><td>Ferrari</td><td>Mall Grand Ind.</td><td><span class="badge badge-info"><span class="dot dot-blue"></span> Disewa</span></td><td>08 Mei 2026</td><td>567</td><td><button class="btn btn-ghost btn-sm">⋮</button></td></tr>
+              <tr><td><b>TK003</b></td><td>Lambo</td><td>Mall Tunjungan</td><td><span class="badge badge-warning"><span class="dot dot-yellow"></span> Service</span></td><td>01 Jun 2026</td><td>89</td><td><button class="btn btn-ghost btn-sm">⋮</button></td></tr>
+              <tr><td><b>TK004</b></td><td>Bus Sekolah</td><td>Mall Grand Ind.</td><td><span class="badge badge-success"><span class="dot dot-green"></span> Tersedia</span></td><td>15 Apr 2026</td><td>2,101</td><td><button class="btn btn-ghost btn-sm">⋮</button></td></tr>
+              <tr><td><b>TK005</b></td><td>Pickup</td><td>Mall Kelapa G.</td><td><span class="badge badge-error"><span class="dot dot-red"></span> Rusak</span></td><td>20 Mar 2026</td><td>312</td><td><button class="btn btn-ghost btn-sm">⋮</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex-row" style="margin-top:12px; justify-content:space-between;">
+          <span style="font-size:12px; color:var(--neutral-500);">Menampilkan 1–5 dari 40,000 unit</span>
+          <div style="display:flex; gap:4px;">
+            <button class="btn btn-outline btn-sm" style="background:#f5f5f5;font-weight:700;">←</button>
+            <button class="btn btn-primary btn-sm">1</button>
+            <button class="btn btn-outline btn-sm">2</button>
+            <button class="btn btn-outline btn-sm">3</button>
+            <button class="btn btn-outline btn-sm">...</button>
+            <button class="btn btn-outline btn-sm">800</button>
+            <button class="btn btn-outline btn-sm">→</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HALAMAN SEWA -->
+      <div class="view" id="view-sewa">
+        <div class="flex-row" style="margin-bottom:16px;">
+          <div style="font-size:16px; font-weight:600;">Sewa Baru</div>
+          <div class="spacer"></div>
+          <span class="badge badge-warning">⏱ Batas: 15:00</span>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <div class="card" style="margin-bottom:16px;">
+              <div class="section-title">1. Pilih Unit</div>
+              <div style="margin-bottom:8px;"><label>Cabang</label><select class="select" style="width:100%;"><option>Mall Grand Indonesia</option></select></div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="display:flex;align-items:center;gap:10px;padding:10px;border:2px solid var(--primary);border-radius:6px;background:#fff7ed;">
+                  <span style="font-size:20px;">🚗</span><span style="font-weight:600;">TK001 — Jeep Anak</span><span class="badge badge-success">🟢 Tersedia</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #e5e5e5;border-radius:6px;">
+                  <span style="font-size:20px;">🏎</span><span>TK002 — Ferrari</span><span class="badge badge-info">🔵 Disewa</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #e5e5e5;border-radius:6px;">
+                  <span style="font-size:20px;">🏎</span><span>TK003 — Lambo</span><span class="badge badge-success">🟢 Tersedia</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #e5e5e5;border-radius:6px;">
+                  <span style="font-size:20px;">🚌</span><span>TK004 — Bus Sekolah</span><span class="badge badge-success">🟢 Tersedia</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-bottom:16px;">
+              <div class="section-title">2. Data Customer</div>
+              <div style="margin-bottom:10px;"><label>Nama Orang Tua</label><input class="input" placeholder="Budi Setiawan" value="Budi Setiawan"></div>
+              <div style="margin-bottom:10px;"><label>Nomor HP</label><input class="input" placeholder="0812-3456-7890" value="0812-3456-7890"></div>
+              <div style="margin-bottom:10px;"><label>Nama Anak</label><input class="input" placeholder="Andi" value="Andi"></div>
+            </div>
+
+            <div class="card">
+              <div class="section-title">3. Durasi & Bayar</div>
+              <div style="margin-bottom:10px;"><label>Durasi Sewa</label>
+                <div style="display:flex; gap:6px;"><button class="btn btn-outline btn-sm">15 mnt</button><button class="btn btn-primary btn-sm">30 mnt</button><button class="btn btn-outline btn-sm">45 mnt</button><button class="btn btn-outline btn-sm">60 mnt</button></div>
+              </div>
+              <div><label>Metode Bayar</label>
+                <div style="display:flex; gap:12px; font-size:13px;">
+                  <label style="display:flex;align-items:center;gap:6px;font-weight:400;"><input type="radio" name="bayar"> Tunai</label>
+                  <label style="display:flex;align-items:center;gap:6px;font-weight:400;"><input type="radio" name="bayar" checked> QRIS</label>
+                  <label style="display:flex;align-items:center;gap:6px;font-weight:400;"><input type="radio" name="bayar"> Transfer</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" style="position:sticky;top:20px;">
+              <div class="section-title">Ringkasan Sewa</div>
+              <div style="font-size:12px; color:var(--neutral-500); line-height:1.8;">
+                <div>Cabang: <b>Mall Grand Indonesia</b></div>
+                <div>Unit: <b>TK001 — Jeep Anak</b></div>
+                <hr style="margin:10px 0; border-color:#f5f5f5;">
+                <div>Tarif per 15 menit: <b>Rp 5,000</b></div>
+                <div>Durasi: <b>30 menit</b></div>
+                <div>Subtotal: <b>Rp 10,000</b></div>
+                <div>Diskon: <b>-Rp 0</b></div>
+                <hr style="margin:10px 0; border-color:#f5f5f5;">
+                <div style="font-size:18px; font-weight:700; color:var(--primary);">TOTAL: Rp 10,000</div>
+              </div>
+              <div style="display:flex; gap:8px; margin-top:16px;">
+                <button class="btn btn-outline" style="flex:1;">BATAL</button>
+                <button class="btn btn-primary btn-lg" style="flex:1;">LANJUTKAN</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRACKING -->
+      <div class="view" id="view-tracking">
+        <div class="flex-row" style="margin-bottom:16px;">
+          <div style="font-size:16px; font-weight:600;">Tracking Real-time</div>
+          <div class="spacer"></div>
+          <select class="select"><option>Mall Grand Indonesia</option><option>Mall Tunjungan Plaza</option></select>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="section-title">🗺 Peta Interaktif — Mall Grand Indonesia</div>
+            <div class="map-placeholder" style="height:320px; position:relative;">
+              <div class="map-geofence" style="left:50px;top:30px;width:200px;height:120px;"></div>
+              <div style="position:absolute;left:55px;top:35px; font-size:10px; color:#22c55e;">Zona A — Lt.1</div>
+              <div class="map-geofence" style="left:280px;top:40px;width:180px;height:100px;border-color:#3b82f6;"></div>
+              <div style="position:absolute;left:285px;top:45px; font-size:10px; color:#3b82f6;">Zona B — Lt.2</div>
+              <div class="map-dot" style="left:100px;top:80px; background:#3b82f6;"></div>
+              <div style="position:absolute;left:105px;top:78px;font-size:9px;">TK-08</div>
+              <div class="map-dot" style="left:180px;top:70px;"></div>
+              <div style="position:absolute;left:185px;top:68px;font-size:9px;">TK-15</div>
+              <div class="map-dot" style="left:120px;top:50px; background:#22c55e;"></div>
+              <div style="position:absolute;left:125px;top:48px;font-size:9px;">TK-01</div>
+              <div class="map-dot" style="left:310px;top:80px; background:#22c55e;"></div>
+              <div style="position:absolute;left:315px;top:78px;font-size:9px;">TK-12</div>
+              <div class="map-dot" style="left:250px;top:100px; background:#eab308;"></div>
+              <div style="position:absolute;left:255px;top:98px;font-size:9px;">TK-03</div>
+              <div style="position:absolute;right:10px;top:10px; display:flex;flex-direction:column;gap:2px;">
+                <button class="btn btn-outline btn-sm" style="min-width:auto;padding:4px 8px;">+</button>
+                <button class="btn btn-outline btn-sm" style="min-width:auto;padding:4px 8px;">−</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" style="margin-bottom:16px;">
+              <div class="section-title">Status Unit</div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:12px;">
+                <div>🟢 Tersedia: <b>35</b></div><div>🔵 Disewa: <b>14</b></div>
+                <div>🟡 Service: <b>2</b></div><div>🔴 Rusak: <b>0</b></div>
+                <div>⚡ Bergerak: <b>12</b></div><div>⏸ Diam: <b>23</b></div>
+                <div style="grid-column:1/-1;">⚠ Di Luar Geofence: <b style="color:var(--error);">0</b></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="section-title">🔔 Alert Log</div>
+              <div class="alert alert-info">14:32 — TK-08 memasuki zona A (Mall Lt.1)</div>
+              <div class="alert alert-info">14:28 — TK-15 berpindah dari zona B ke A</div>
+              <div class="alert alert-warning">14:25 — TK-01 mendekati batas geofence</div>
+              <div class="alert alert-success">14:20 — TK-12 memasuki zona C (Mall Lt.2)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <div class="section-title">📋 Aktivitas Terbaru</div>
+          <table>
+            <thead><tr><th>Waktu</th><th>Unit</th><th>Event</th><th>Lokasi</th></tr></thead>
+            <tbody>
+              <tr><td>14:32</td><td><b>TK-08</b></td><td>Masuk Zona</td><td>Mall Lt.1</td></tr>
+              <tr><td>14:28</td><td><b>TK-15</b></td><td>Pindah Zona</td><td>Zona B → A</td></tr>
+              <tr><td>14:25</td><td><b>TK-01</b></td><td>Dekat Batas</td><td>Batas Zona</td></tr>
+              <tr><td>14:20</td><td><b>TK-12</b></td><td>Masuk Zona</td><td>Mall Lt.2</td></tr>
+              <tr><td>14:15</td><td><b>TK-03</b></td><td>Selesai</td><td>Zona Park</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- POP-UP STORE -->
+      <div class="view" id="view-popup">
+        <div class="flex-row" style="margin-bottom:16px;">
+          <div style="font-size:16px; font-weight:600;">Pop-up Store</div>
+          <div class="spacer"></div>
+          <button class="btn btn-primary">+ Buat Pop-up Store Baru</button>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="calendar">
+              <div class="calendar-header">
+                <button class="btn btn-ghost btn-sm">←</button>
+                <span>Juni 2026</span>
+                <button class="btn btn-ghost btn-sm">→</button>
+              </div>
+              <div class="calendar-grid">
+                <div class="day-header">Se</div><div class="day-header">Ra</div><div class="day-header">Ka</div><div class="day-header">Ju</div><div class="day-header">Sa</div><div class="day-header">Mi</div>
+                <div class="day"></div><div class="day"></div><div class="day"></div><div class="day">1</div><div class="day">2</div><div class="day">3</div>
+                <div class="day">4</div><div class="day today" style="position:relative;">5<div style="position:absolute;bottom:2px;width:4px;height:4px;background:var(--primary);border-radius:50%;"></div></div><div class="day">6</div><div class="day">7</div><div class="day" style="position:relative;">8<div style="position:absolute;bottom:2px;width:4px;height:4px;background:var(--primary);border-radius:50%;"></div></div><div class="day">9</div><div class="day">10</div>
+                <div class="day">11</div><div class="day" style="position:relative;">12<div style="position:absolute;bottom:2px;width:4px;height:4px;background:var(--secondary);border-radius:50%;"></div></div><div class="day">13</div><div class="day">14</div><div class="day">15</div><div class="day">16</div><div class="day">17</div>
+                <div class="day">18</div><div class="day">19</div><div class="day" style="position:relative;">20<div style="position:absolute;bottom:2px;width:4px;height:4px;background:var(--primary);border-radius:50%;"></div></div><div class="day">21</div><div class="day">22</div><div class="day">23</div><div class="day">24</div>
+                <div class="day">25</div><div class="day">26</div><div class="day">27</div><div class="day">28</div><div class="day">29</div><div class="day">30</div><div class="day"></div>
+              </div>
+            </div>
+            <div style="margin-top:10px; font-size:11px;">
+              <div style="display:flex;align-items:center;gap:4px;margin-bottom:4px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--primary);"></span> Car Free Day — 5 Jun, 8 Jun, 20 Jun</div>
+              <div style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--secondary);"></span> Festival — 12 Jun</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">Detail Pop-up: "Car Free Day"</div>
+            <div style="margin-bottom:12px;"><span class="badge badge-warning">⏳ Persiapan</span></div>
+            <div style="display:grid; grid-template-columns:auto 1fr; gap:6px 16px; font-size:12px; margin-bottom:16px;">
+              <span style="color:var(--neutral-500);">Lokasi:</span><span><b>Jl. Sudirman, Jakarta</b></span>
+              <span style="color:var(--neutral-500);">Tanggal:</span><span><b>8 Juni 2026</b></span>
+              <span style="color:var(--neutral-500);">Jam:</span><span><b>06:00–12:00</b></span>
+              <span style="color:var(--neutral-500);">Unit:</span><span><b>15 unit (disiapkan)</b></span>
+            </div>
+
+            <div class="section-title">Workflow Setup</div>
+            <ul class="steps-list">
+              <li class="done"><span class="step-icon">✓</span> Survei lokasi</li>
+              <li class="done"><span class="step-icon">✓</span> Izin lokasi</li>
+              <li class="active"><span class="step-icon">●</span> Siapkan unit
+                <div style="margin-left:auto; font-size:10px; color:var(--primary);">80%</div>
+              </li>
+              <li><span class="step-icon"></span> Transportasi unit</li>
+              <li><span class="step-icon"></span> Setup di lokasi</li>
+              <li><span class="step-icon"></span> Briefing operator</li>
+              <li><span class="step-icon"></span> Buka operasional</li>
+              <li><span class="step-icon"></span> Teardown</li>
+              <li><span class="step-icon"></span> Kembalikan unit</li>
+            </ul>
+            <div class="progress-bar" style="margin:8px 0;"><div class="fill" style="width:33%"></div></div>
+
+            <div style="margin-top:12px;">
+              <div class="section-title">Operator</div>
+              <div style="display:flex; gap:6px;">
+                <span class="badge badge-info">👤 Andi (PIC)</span>
+                <span class="badge badge-neutral">👤 Budi</span>
+                <span class="badge badge-neutral">👤 Cici</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAPORAN & ANALYTICS -->
+      <div class="view" id="view-laporan">
+        <div class="flex-row" style="margin-bottom:16px;">
+          <div style="font-size:16px; font-weight:600;">Laporan & Analytics</div>
+          <div class="spacer"></div>
+          <button class="btn btn-outline">Export ▾</button>
+          <button class="btn btn-outline">Print</button>
+        </div>
+
+        <div class="filter-bar">
+          <input class="input" type="date" value="2026-06-01" style="max-width:150px;">
+          <span style="font-size:13px;">—</span>
+          <input class="input" type="date" value="2026-06-07" style="max-width:150px;">
+          <select class="select"><option>Cabang: Semua</option><option>Mall Grand Indonesia</option></select>
+          <select class="select"><option>Tipe Unit: Semua</option></select>
+          <button class="btn btn-primary btn-sm">Terapkan</button>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-icon green">💰</div><div><div class="stat-label">Total Pendapatan</div><div class="stat-value">Rp 315.45M</div><div class="stat-trend">↑ 12% vs minggu lalu</div></div></div>
+          <div class="stat-card"><div class="stat-icon blue">📋</div><div><div class="stat-label">Total Sewa</div><div class="stat-value">2,341</div><div class="stat-trend">↑ 8%</div></div></div>
+          <div class="stat-card"><div class="stat-icon orange">⏱</div><div><div class="stat-label">Rata-rata Durasi</div><div class="stat-value">28 mnt</div><div class="stat-trend">↑ 2 mnt</div></div></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="section-title">Pendapatan Per Cabang (Top 5)</div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <div class="bar-chart-label"><span class="name">Mall A</span><span class="bar" style="width:180px;"></span><span class="val">Rp 85M</span></div>
+              <div class="bar-chart-label"><span class="name">Mall B</span><span class="bar" style="width:150px;"></span><span class="val">Rp 72M</span></div>
+              <div class="bar-chart-label"><span class="name">Mall C</span><span class="bar" style="width:130px;"></span><span class="val">Rp 65M</span></div>
+              <div class="bar-chart-label"><span class="name">Mall D</span><span class="bar" style="width:100px;"></span><span class="val">Rp 48M</span></div>
+              <div class="bar-chart-label"><span class="name">Mall E</span><span class="bar" style="width:85px;"></span><span class="val">Rp 42M</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">Pendapatan Per Jam</div>
+            <div class="chart-bar" style="height:100px;">
+              <div class="bar" style="height:20%"></div><div class="bar" style="height:40%"></div><div class="bar" style="height:70%"></div>
+              <div class="bar" style="height:100%"></div><div class="bar" style="height:85%"></div><div class="bar" style="height:50%"></div>
+              <div class="bar" style="height:25%"></div>
+            </div>
+            <div class="chart-labels"><span>08</span><span>10</span><span>12</span><span>14</span><span>16</span><span>18</span><span>20</span></div>
+            <div style="font-size:11px; color:var(--neutral-500); margin-top:4px;">Peak: 14:00</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px;">
+          <div class="card">
+            <div class="section-title">Utilisasi Unit Per Hari</div>
+            <div class="chart-bar" style="height:100px;">
+              <div class="bar" style="height:50%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:78%"></div>
+              <div class="bar" style="height:85%"></div><div class="bar" style="height:72%"></div><div class="bar" style="height:88%"></div>
+              <div class="bar" style="height:60%"></div>
+            </div>
+            <div class="chart-labels"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div>
+            <div style="font-size:11px; margin-top:4px;">Rata-rata: 72%</div>
+          </div>
+
+          <div class="card" style="display:flex;align-items:center;gap:20px;">
+            <div class="pie-chart"></div>
+            <div style="font-size:12px;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="width:10px;height:10px;background:var(--success);border-radius:2px;"></span> Tersedia 65%</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="width:10px;height:10px;background:var(--secondary);border-radius:2px;"></span> Disewa 25%</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="width:10px;height:10px;background:var(--warning);border-radius:2px;"></span> Service 7%</div>
+              <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;background:var(--error);border-radius:2px;"></span> Rusak 3%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px; padding:0; overflow:auto;">
+          <div class="flex-row" style="padding:14px 20px; border-bottom:1px solid #e5e5e5;">
+            <div class="section-title" style="margin:0;">Tabel Detail Transaksi</div>
+            <div class="spacer"></div>
+            <button class="btn btn-outline btn-sm">Export CSV</button>
+          </div>
+          <table>
+            <thead><tr><th>Tgl</th><th>Cabang</th><th>Unit</th><th>Customer</th><th>Durasi</th><th>Biaya</th><th>Metode</th><th>Kasir</th></tr></thead>
+            <tbody>
+              <tr><td>07/06</td><td>Mall Grand Ind.</td><td>TK001</td><td>Budi</td><td>30 mnt</td><td>Rp 15,000</td><td>QRIS</td><td>Operator A</td></tr>
+              <tr><td>07/06</td><td>Mall Grand Ind.</td><td>TK008</td><td>Ani</td><td>15 mnt</td><td>Rp 7,500</td><td>Tunai</td><td>Operator A</td></tr>
+              <tr><td>07/06</td><td>Mall Tunjungan</td><td>TK015</td><td>Siti</td><td>45 mnt</td><td>Rp 22,500</td><td>QRIS</td><td>Kasir 1</td></tr>
+              <tr><td>07/06</td><td>Mall K. Gading</td><td>TK022</td><td>Dodi</td><td>60 mnt</td><td>Rp 30,000</td><td>Transfer</td><td>Kasir 2</td></tr>
+            </tbody>
+          </table>
+          <div style="padding:12px 20px; font-size:12px; color:var(--neutral-500); text-align:right;">Menampilkan 1–4 dari 2,341 transaksi</div>
+        </div>
+      </div>
+
+      <!-- MOBILE VIEW -->
+      <div class="view" id="view-mobile">
+        <div style="display:flex; gap:24px; justify-content:center; flex-wrap:wrap;">
+          <!-- Mobile: Dashboard Cabang -->
+          <div>
+            <div style="text-align:center; font-weight:600; margin-bottom:8px; font-size:13px;">📱 Beranda — Operator</div>
+            <div class="mobile-frame">
+              <div class="mobile-header">🚗 Mall Grand Ind.</div>
+              <div class="mobile-content">
+                <div style="display:flex; gap:6px; margin-bottom:10px;">
+                  <div class="card-sm" style="flex:1; text-align:center; background:#fff7ed;"><div style="font-size:20px;">🚗</div><div style="font-size:18px;font-weight:700;">85</div><div style="font-size:9px;color:#737373;">Unit Aktif</div></div>
+                  <div class="card-sm" style="flex:1; text-align:center; background:#f0fdf4;"><div style="font-size:20px;">💰</div><div style="font-size:16px;font-weight:700;">Rp 3.2M</div><div style="font-size:9px;color:#737373;">Pendapatan</div></div>
+                </div>
+                <div class="card-sm" style="margin-bottom:8px;">
+                  <div style="font-weight:600;font-size:12px;margin-bottom:6px;">Unit Sedang Disewa</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid #f5f5f5;font-size:11px;">
+                    <span><b>TK-01</b> — Budi</span><span class="timer-badge timer-warning" style="font-size:11px;">⏱ 05:23</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;font-size:11px;">
+                    <span><b>TK-08</b> — Ani</span><span class="timer-badge" style="font-size:11px;">⏱ 20:12</span>
+                  </div>
+                </div>
+                <div class="card-sm">
+                  <div style="font-weight:600;font-size:12px;margin-bottom:4px;">⚡ Quick Actions</div>
+                  <button class="btn btn-primary btn-full" style="margin-bottom:4px;">Mulai Sewa</button>
+                  <button class="btn btn-outline btn-full btn-sm">Cek Unit Ready</button>
+                </div>
+              </div>
+              <div class="mobile-nav">
+                <a class="active"><span class="nav-icon">🏠</span>Beranda</a>
+                <a><span class="nav-icon">🚗</span>Unit</a>
+                <a class="cta"><span class="nav-icon">📋</span>Sewa</a>
+                <a><span class="nav-icon">🗺</span>Track</a>
+                <a><span class="nav-icon">⋯</span>Lainnya</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile: Unit Card List -->
+          <div>
+            <div style="text-align:center; font-weight:600; margin-bottom:8px; font-size:13px;">📱 Manajemen Unit</div>
+            <div class="mobile-frame">
+              <div class="mobile-header">Manajemen Unit</div>
+              <div class="mobile-content">
+                <div style="display:flex; gap:6px; margin-bottom:10px;">
+                  <input class="input" placeholder="🔍 Cari unit..." style="flex:1; font-size:11px;">
+                  <button class="btn btn-outline btn-sm">Filter</button>
+                </div>
+                <div class="card-sm" style="margin-bottom:6px; display:flex; align-items:center; gap:10px;">
+                  <span style="font-size:22px;">🚗</span>
+                  <div style="flex:1;"><div style="font-weight:600;font-size:12px;">TK001 — Jeep Anak</div><div style="font-size:10px;color:#737373;">Mall Grand Ind. · Last: 10 Mei · 1,234× sewa</div></div>
+                  <span class="badge badge-success" style="font-size:10px;">🟢</span>
+                </div>
+                <div class="card-sm" style="margin-bottom:6px; display:flex; align-items:center; gap:10px;">
+                  <span style="font-size:22px;">🏎</span>
+                  <div style="flex:1;"><div style="font-weight:600;font-size:12px;">TK002 — Ferrari</div><div style="font-size:10px;color:#737373;">Mall Grand Ind. · Last: 08 Mei · 567× sewa</div></div>
+                  <span class="badge badge-info" style="font-size:10px;">🔵</span>
+                </div>
+                <div class="card-sm" style="margin-bottom:6px; display:flex; align-items:center; gap:10px;">
+                  <span style="font-size:22px;">🏎</span>
+                  <div style="flex:1;"><div style="font-weight:600;font-size:12px;">TK003 — Lambo</div><div style="font-size:10px;color:#737373;">Mall Tunjungan · Last: 01 Jun · 89× sewa</div></div>
+                  <span class="badge badge-warning" style="font-size:10px;">🟡</span>
+                </div>
+                <div class="card-sm" style="margin-bottom:6px; display:flex; align-items:center; gap:10px;">
+                  <span style="font-size:22px;">🚌</span>
+                  <div style="flex:1;"><div style="font-weight:600;font-size:12px;">TK004 — Bus Sekolah</div><div style="font-size:10px;color:#737373;">Mall Grand Ind. · Last: 15 Apr · 2,101× sewa</div></div>
+                  <span class="badge badge-success" style="font-size:10px;">🟢</span>
+                </div>
+                <div style="text-align:center; padding:8px; font-size:11px; color:var(--neutral-500);">Memuat lebih banyak...</div>
+              </div>
+              <div class="mobile-nav">
+                <a><span class="nav-icon">🏠</span>Beranda</a>
+                <a class="active"><span class="nav-icon">🚗</span>Unit</a>
+                <a class="cta"><span class="nav-icon">📋</span>Sewa</a>
+                <a><span class="nav-icon">🗺</span>Track</a>
+                <a><span class="nav-icon">⋯</span>Lainnya</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile: Shift Tutup -->
+          <div>
+            <div style="text-align:center; font-weight:600; margin-bottom:8px; font-size:13px;">📱 Tutup Shift — Rekap</div>
+            <div class="mobile-frame">
+              <div class="mobile-header">Tutup Shift</div>
+              <div class="mobile-content">
+                <div style="text-align:center; margin:20px 0;">
+                  <div style="font-size:36px; margin-bottom:8px;">📊</div>
+                  <div style="font-size:14px; color:var(--neutral-500);">Rekap Shift Hari Ini</div>
+                  <div style="font-size:11px; color:var(--neutral-400);">08:00 — 20:00 WIB</div>
+                </div>
+                <div class="card-sm" style="margin-bottom:10px;">
+                  <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f5f5f5;font-size:13px;"><span>Total Sewa</span><b>25</b></div>
+                  <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f5f5f5;font-size:13px;"><span>Pendapatan</span><b>Rp 375,000</b></div>
+                  <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f5f5f5;font-size:13px;"><span>Rata2 Durasi</span><b>28 mnt</b></div>
+                  <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:13px;"><span>Metode Bayar</span><span>QRIS: 18 · Tunai: 7</span></div>
+                </div>
+                <button class="btn btn-primary btn-full" style="margin-bottom:4px;">🖨 Print Rekap</button>
+                <button class="btn btn-outline btn-full">✅ Serah Terima Shift</button>
+              </div>
+              <div class="mobile-nav">
+                <a><span class="nav-icon">🏠</span>Beranda</a>
+                <a><span class="nav-icon">🚗</span>Unit</a>
+                <a><span class="nav-icon">📋</span>Sewa</a>
+                <a><span class="nav-icon">🗺</span>Track</a>
+                <a><span class="nav-icon">⋯</span>Lainnya</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATES DEMO -->
+      <div class="view" id="view-states">
+        <div style="font-size:16px; font-weight:600; margin-bottom:20px;">Loading, Empty & Error States</div>
+
+        <div class="grid-3">
+          <div class="card" style="text-align:center; padding:40px 20px;">
+            <div style="font-size:40px; margin-bottom:12px;">⏳</div>
+            <div class="skeleton" style="width:200px;height:20px;margin:0 auto 8px;"></div>
+            <div class="skeleton" style="width:160px;height:14px;margin:0 auto 8px;"></div>
+            <div class="skeleton" style="width:120px;height:14px;margin:0 auto;"></div>
+            <div style="font-size:11px; color:var(--neutral-500);margin-top:12px;">Skeleton Loading State</div>
+          </div>
+
+          <div class="card" style="text-align:center; padding:40px 20px;">
+            <div style="font-size:40px; margin-bottom:12px;">📭</div>
+            <div style="font-weight:600; margin-bottom:4px;">Belum ada unit terdaftar</div>
+            <div style="font-size:12px; color:var(--neutral-500); margin-bottom:14px;">Cabang ini belum memiliki unit terdaftar.</div>
+            <button class="btn btn-primary btn-sm">Tambah Unit</button>
+            <div style="font-size:11px; color:var(--neutral-500);margin-top:12px;">Empty State</div>
+          </div>
+
+          <div class="card" style="text-align:center; padding:40px 20px;">
+            <div style="font-size:40px; margin-bottom:12px;">⚠</div>
+            <div style="font-weight:600; margin-bottom:4px; color:var(--error);">Gagal memuat data</div>
+            <div style="font-size:12px; color:var(--neutral-500); margin-bottom:14px;">Tidak dapat terhubung ke server. Periksa koneksi Anda.</div>
+            <button class="btn btn-outline btn-sm">Coba Lagi</button>
+            <div style="font-size:11px; color:var(--neutral-500);margin-top:12px;">Error State — Network</div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;">
+          <div class="section-title">Alert / Notification States</div>
+          <div class="grid-2" style="margin-top:10px;">
+            <div>
+              <div class="alert alert-success">✅ Sewa berhasil! Unit TK001 siap digunakan.</div>
+              <div class="alert alert-info">ℹ Maintenance TK-05 telah selesai.</div>
+              <div class="alert alert-warning">⚠ TK-08 mendekati batas waktu sewa.</div>
+              <div class="alert alert-error">❌ Pembayaran gagal. Silakan coba lagi.</div>
+            </div>
+            <div>
+              <div style="font-size:13px; font-weight:600; margin-bottom:8px;">Form Validation Error</div>
+              <div style="margin-bottom:10px;">
+                <label style="color:var(--error);">Nama Customer</label>
+                <input class="input" style="border-color:var(--error);" value="">
+                <div style="font-size:10px; color:var(--error); margin-top:2px;">Nama customer wajib diisi</div>
+              </div>
+              <div style="margin-bottom:10px;">
+                <label>Nomor HP</label>
+                <input class="input" style="border-color:var(--error);" value="0812-xxx">
+                <div style="font-size:10px; color:var(--error); margin-top:2px;">Format nomor HP tidak valid</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;">
+          <div class="section-title">Button Loading States</div>
+          <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+            <button class="btn btn-primary" style="opacity:0.8;">⏳ Memproses...</button>
+            <button class="btn btn-outline" style="opacity:0.8;">⏳ Menyimpan...</button>
+            <button class="btn btn-danger" style="opacity:0.8;">⏳ Menghapus...</button>
+            <button class="btn btn-primary btn-lg">Simpan</button>
+            <button class="btn btn-outline">Cetak Struk</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+document.querySelectorAll('.sidebar-nav a').forEach(link => {
+  link.addEventListener('click', () => {
+    const view = link.dataset.view;
+    document.querySelectorAll('.sidebar-nav a').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const target = document.getElementById('view-' + view);
+    if (target) target.classList.add('active');
+    const titles = {
+      login: 'Login — Rental Mobil Anak',
+      'dashboard-admin': 'Dashboard Admin Pusat',
+      'dashboard-cabang': 'Dashboard Cabang',
+      unit: 'Manajemen Unit',
+      sewa: 'Halaman Sewa',
+      tracking: 'Tracking Real-time',
+      popup: 'Pop-up Store',
+      laporan: 'Laporan & Analytics',
+      mobile: 'Mobile View — Operator Lapangan',
+      states: 'States Demo (Loading / Empty / Error)'
+    };
+    document.getElementById('viewTitle').textContent = titles[view] || view;
+  });
+});
+</script>
+
+</body>
+</html>
